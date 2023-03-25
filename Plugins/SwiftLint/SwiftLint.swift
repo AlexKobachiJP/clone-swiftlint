@@ -6,15 +6,7 @@ import PackagePlugin
 @main
 struct SwiftLint: CommandPlugin {
     func performCommand(context: PluginContext, arguments: [String]) async throws {
-        let (targetNames, remainingArguments) = arguments.groupedWithContext { ctx -> Either<String, String>? in
-            if ctx.current == "--target" {
-                return nil
-            } else if ctx.previous == "--target" {
-                return .left(ctx.current)
-            } else {
-                return .right(ctx.current)
-            }
-        }
+        let (targetNames, remainingArguments) = getTargetsAndArgumentsNames(from: arguments)
 
         var arguments = [
             "lint",
@@ -40,5 +32,20 @@ struct SwiftLint: CommandPlugin {
                 try Process.run(swiftlint, arguments: arguments.filter { $0 != "--fix" } + [path])
             }
         }
+    }
+}
+
+extension SwiftLint {
+    private func getTargetsAndArgumentsNames(from arguments: [String]) -> (targetNames: [String], remainingArguments: [String]) {
+        let groups = arguments.groupedWithContext { ctx -> Either<String, String>? in
+            if ctx.current == "--target" {
+                return nil
+            } else if ctx.previous == "--target" {
+                return .left(ctx.current)
+            } else {
+                return .right(ctx.current)
+            }
+        }
+        return (targetNames: groups.lefts, remainingArguments: groups.rights)
     }
 }
