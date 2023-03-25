@@ -18,18 +18,18 @@ struct SwiftLint: CommandPlugin {
         let swiftlint = try context.tool(named: "swiftlint").path.string
 
         for target in context.package.targets {
-            guard target is SourceModuleTarget, targetNames.contains(target.name) else {
+            guard let sourceTarget = target as? SourceModuleTarget, targetNames.contains(sourceTarget.name) else {
                 continue
             }
 
-            let path = target.directory.string
+            let paths = sourceTarget.sourceFiles(withSuffix: "swift").map(\.path).map(\.string)
 
-            try Process.run(swiftlint, arguments: arguments + [path])
+            try Process.run(swiftlint, arguments: arguments + paths)
 
             // Run again if the last run included the `--fix` flag.
             if arguments.contains("--fix") {
                 print("Completed correcting violations where possible, running again without `--fix` flag.")
-                try Process.run(swiftlint, arguments: arguments.filter { $0 != "--fix" } + [path])
+                try Process.run(swiftlint, arguments: arguments.filter { $0 != "--fix" } + paths)
             }
         }
     }
