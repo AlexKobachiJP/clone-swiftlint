@@ -87,8 +87,12 @@ extension Configuration {
     }
 
     private func configuration(forDirectory directory: String) -> Configuration {
+        // AKS 2023/3/25: For Xcode plugins, `FileManager.default.currentDirectoryPath` returns `/` and the default
+        // config cannot be found. For that reason, the plugin does the search and passes in the default config as an
+        // argument. But we still want nested configs to work, so disabling the guard.
+
         // If the configuration was explicitly specified via the `--config` param, don't use nested configs
-        guard !basedOnCustomConfigurationFiles else { return self }
+        // guard !basedOnCustomConfigurationFiles else { return self }
 
         let directoryNSString = directory.bridge()
         let configurationSearchPath = directoryNSString.appendingPathComponent(Self.defaultFileName)
