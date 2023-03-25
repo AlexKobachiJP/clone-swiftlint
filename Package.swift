@@ -119,8 +119,17 @@ let package = Package(
         ),
         .binaryTarget(
             name: "SwiftLintBinary",
-            url: "https://github.com/realm/SwiftLint/releases/download/0.50.3/SwiftLintBinary-macos.artifactbundle.zip",
-            checksum: "abe7c0bb505d26c232b565c3b1b4a01a8d1a38d86846e788c4d02f0b1042a904"
+
+            // Development
+//            path: "../../AlexKobachiJP/swift-lint-dev-env/SwiftLintBinary.artifactbundle"
+
+            // Private Release
+            url: "https://github.com/AlexKobachiJP/clone-swiftlint/releases/download/v230326/SwiftLintBinary.artifactbundle-macos.zip",
+            checksum: "ee62c535e9f24703b5eee05487f08d6444dea8ff88dc8c0b9e92bebbfeda400e"
+
+            // Official Release
+//            url: "https://github.com/realm/SwiftLint/releases/download/0.50.3/SwiftLintBinary-macos.artifactbundle.zip",
+//            checksum: "abe7c0bb505d26c232b565c3b1b4a01a8d1a38d86846e788c4d02f0b1042a904"
         )
     ]
 )
