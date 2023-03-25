@@ -26,7 +26,8 @@ let package = Package(
     products: [
         .executable(name: "swiftlint", targets: ["swiftlint"]),
         .library(name: "SwiftLintFramework", targets: ["SwiftLintFramework"]),
-        .plugin(name: "SwiftLintPlugin", targets: ["SwiftLintPlugin"])
+        .plugin(name: "SwiftLintPlugin", targets: ["SwiftLintPlugin"]),
+        .plugin(name: "SwiftLint", targets: ["SwiftLint"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "1.2.1")),
@@ -40,6 +41,21 @@ let package = Package(
         .plugin(
             name: "SwiftLintPlugin",
             capability: .buildTool(),
+            dependencies: [
+                .target(name: binaryPlugin ? "SwiftLintBinary" : "swiftlint")
+            ]
+        ),
+        .plugin(
+            name: "SwiftLint",
+            capability: .command(
+                intent: .custom(
+                    verb: "lint",
+                    description: "This command runs SwiftLint with the `--fix` option."
+                ),
+                permissions: [
+                    .writeToPackageDirectory(reason: "This command fixes lint issues.")
+                ]
+            ),
             dependencies: [
                 .target(name: binaryPlugin ? "SwiftLintBinary" : "swiftlint")
             ]
