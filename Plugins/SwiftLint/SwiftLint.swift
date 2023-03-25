@@ -11,6 +11,7 @@ struct SwiftLint: CommandPlugin {
         var arguments = [
             "lint",
             "--quiet",
+            "--force-exclude",
             "--cache-path", "\(context.pluginWorkDirectory)",
         ]
         arguments += remainingArguments
