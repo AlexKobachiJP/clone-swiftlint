@@ -124,8 +124,8 @@ let package = Package(
 //            path: "../../AlexKobachiJP/swift-lint-dev-env/SwiftLintBinary.artifactbundle"
 
             // Private Release
-            url: "https://github.com/AlexKobachiJP/clone-swiftlint/releases/download/v230326/SwiftLintBinary.artifactbundle-macos.zip",
-            checksum: "ee62c535e9f24703b5eee05487f08d6444dea8ff88dc8c0b9e92bebbfeda400e"
+            url: "https://github.com/AlexKobachiJP/clone-swiftlint/releases/download/v230331/SwiftLintBinary.artifactbundle-macos.zip",
+            checksum: "0398c66141bbe9a0b86450f4dcfaa9de4c8093e1dd7ba0e241abfc85ebfdb0c0"
 
             // Official Release
 //            url: "https://github.com/realm/SwiftLint/releases/download/0.50.3/SwiftLintBinary-macos.artifactbundle.zip",
