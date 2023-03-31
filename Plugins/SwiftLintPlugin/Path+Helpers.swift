@@ -40,3 +40,38 @@ extension Path {
         return result == 0
     }
 }
+
+extension Path {
+    /// Opens the receiver's file and looks for the first line containing the label `"xcode-plugin-arguments:"`. If found, returns the rest of the line after the label
+    /// as an array of strings by splitting on `" "`.
+    ///
+    /// For example, if the file at the receiver's path is the following, the function returns `["--strict", "--no-cache"]`:
+    /// ```yaml
+    /// # xcode-plugin-arguments: --strict --no-cache
+    ///
+    /// included:
+    ///   - Sources
+    ///   - Tests
+    /// ```
+    func xcodePluginArguments() -> [String] {
+        guard let contents = try? String(contentsOfFile: string) else {
+            return []
+        }
+
+        var arguments: [String]?
+        contents.enumerateLines { line, stop in
+            let line = line as NSString
+            let labelRange = line.range(of: "xcode-plugin-arguments:")
+            let foundLabel = labelRange.location != NSNotFound
+            if foundLabel {
+                stop = true
+                let argumentsRange = NSRange(location: labelRange.upperBound, length: line.length - labelRange.upperBound)
+                arguments = line.substring(with: argumentsRange)
+                    .split(separator: " ")
+                    .map(String.init)
+            }
+        }
+
+        return arguments ?? []
+    }
+}
